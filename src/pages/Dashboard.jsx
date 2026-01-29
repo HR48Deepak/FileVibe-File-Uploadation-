@@ -147,7 +147,7 @@ const Dashboard = () => {
                                     {stats.recentFiles.map((file) => (
                                         <li key={file._id} className="flex justify-between items-center p-3 bg-slate-50 rounded-lg">
                                             <span className="text-sm font-medium truncate w-40">📄 {file.filename}</span>
-                                            <span className="text-xs text-slate-400">{new Date(file.createdAt).toLocaleDateString()}</span>
+                                            <span className="text-xs px-2 py-1 text-slate-400">{new Date(file.createdAt).toLocaleDateString()}</span>
                                         </li>
                                     ))}
                                 </ul>
@@ -162,7 +162,7 @@ const Dashboard = () => {
                                     {stats.recentShared.map((item) => (
                                         <li key={item._id} className="flex justify-between items-center p-3 bg-slate-50 rounded-lg">
                                             <span className="text-sm font-medium truncate w-40">🔗 {item.file?.filename || "Shared File"}</span>
-                                            <span className="text-[10px] bg-blue-100 text-blue-600 px-2 py-1 rounded font-bold">SHARED</span>
+                                            <span className="text-xs bg-blue-100 text-blue-600 px-2 py-1 rounded font-bold">SHARED</span>
                                         </li>
                                     ))}
                                 </ul>
