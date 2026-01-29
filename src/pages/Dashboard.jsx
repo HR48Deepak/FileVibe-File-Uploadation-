@@ -30,7 +30,7 @@ const Dashboard = () => {
         dispatch(fetchProfilePic());
 
         const fetchDashboardStats = async () => {
-            // dispatch(setloading(true))
+            dispatch(setloading(true));
             try {
                 const config = {
                     headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
