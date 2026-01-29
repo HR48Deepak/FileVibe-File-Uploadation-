@@ -6,7 +6,7 @@ import { HiMenuAlt1 } from "react-icons/hi";
 import { Link, useNavigate } from "react-router-dom";
 import { useRef, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { verifyToken, fetchProfilePic, uploadProfilePic } from "../redux/userSlice";
+import { verifyToken, fetchProfilePic, uploadProfilePic,setloading } from "../redux/userSlice";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 // import Loader from "../components/Loader"
@@ -30,7 +30,7 @@ const Dashboard = () => {
         dispatch(fetchProfilePic());
 
         const fetchDashboardStats = async () => {
-            // dispatch(setloading(true))
+            dispatch(setloading(true))
             try {
                 const config = {
                     headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
@@ -49,7 +49,7 @@ const Dashboard = () => {
                 console.error("Failed to load dashboard", error);
             }
             finally{
-                // dispatch(setloading(false))
+                dispatch(setloading(false))
             }
         };
         fetchDashboardStats();
