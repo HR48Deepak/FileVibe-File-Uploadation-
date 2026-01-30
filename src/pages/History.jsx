@@ -26,7 +26,10 @@ const History = () => {
     const itemsPerPage = 5;
 
    
-    const { data, isLoading,error } = useSWR('https://file-system-xi.vercel.app/api/share', fetcher);
+    const { 
+        data, 
+        isLoading,
+        error } = useSWR('https://file-system-xi.vercel.app/api/share', fetcher);
 
     useEffect(() => {
         dispatch(setloading(isLoading));

@@ -36,7 +36,10 @@ const MyFiles = () => {
     const itemsPerPage = 5;
 
     
-    const { data: file = [], isLoading ,error} = useSWR('https://file-system-xi.vercel.app/api/file', fetcher);
+    const { 
+        data: file = [], 
+        isLoading ,
+        error} = useSWR('https://file-system-xi.vercel.app/api/file', fetcher);
 
     useEffect(() => {
         dispatch(setloading(isLoading));

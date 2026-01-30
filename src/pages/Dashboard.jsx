@@ -23,8 +23,12 @@ const Dashboard = () => {
     const [isSidebarVisible, setIsSidebarVisible] = useState(true);
     const { fullname, email, profilePic } = useSelector((state) => state.user);
 
-    const { data: filesData, isLoading: filesLoading, error: fileError } = useSWR('https://file-system-xi.vercel.app/api/file', fetcher);
-    const { data: historyData, isLoading: historyLoading, error: historyError } = useSWR('https://file-system-xi.vercel.app/api/share', fetcher);
+    const { data: filesData, 
+        isLoading: filesLoading, 
+        error: fileError } = useSWR('https://file-system-xi.vercel.app/api/file', fetcher);
+    const { data: historyData, 
+        isLoading: historyLoading, 
+        error: historyError } = useSWR('https://file-system-xi.vercel.app/api/share', fetcher);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
