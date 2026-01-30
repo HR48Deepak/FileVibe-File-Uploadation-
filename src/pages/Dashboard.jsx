@@ -6,19 +6,26 @@ import { HiMenuAlt1 } from "react-icons/hi";
 import { Link, useNavigate } from "react-router-dom";
 import { useRef, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { verifyToken, fetchProfilePic, uploadProfilePic,setloading } from "../redux/userSlice";
+import { verifyToken, fetchProfilePic, uploadProfilePic, setloading } from "../redux/userSlice";
 import axios from "axios";
 import { toast } from "react-hot-toast";
-// import Loader from "../components/Loader"
+import useSWR from 'swr';
+
+const fetcher = (url) => axios.get(url, {
+    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+}).then(res => res.data);
 
 const Dashboard = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const inputRef = useRef(null);
-    
+
     const [isSidebarVisible, setIsSidebarVisible] = useState(true);
-    const [stats, setStats] = useState({ recentFiles: [], recentShared: [] });
     const { fullname, email, profilePic } = useSelector((state) => state.user);
+
+    // SWR Data Fetching
+    const { data: filesData, isLoading: filesLoading, error: fileError } = useSWR('https://file-system-xi.vercel.app/api/file', fetcher);
+    const { data: historyData, isLoading: historyLoading, error: historyError } = useSWR('https://file-system-xi.vercel.app/api/share', fetcher);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -28,32 +35,17 @@ const Dashboard = () => {
         }
         dispatch(verifyToken()).unwrap().catch(() => navigate("/"));
         dispatch(fetchProfilePic());
-
-        const fetchDashboardStats = async () => {
-            dispatch(setloading(true))
-            try {
-                const config = {
-                    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-                };
-                const [filesRes, historyRes] = await Promise.all([
-                    axios.get('https://file-system-xi.vercel.app/api/file', config),
-                    axios.get('https://file-system-xi.vercel.app/api/share', config)
-                ]);
-
-                setStats({
-                    recentFiles: filesRes.data.slice(0, 4),
-                    recentShared: (historyRes.data || []).slice(0, 4)
-                });
-                 dispatch(setloading(false));
-            } catch (error) {
-                console.error("Failed to load dashboard", error);
-            }
-            finally{
-                dispatch(setloading(false))
-            }
-        };
-        fetchDashboardStats();
     }, [dispatch, navigate]);
+
+    // Sync SWR loading state with Redux loader
+    useEffect(() => {
+        dispatch(setloading(filesLoading || historyLoading));
+    }, [filesLoading, historyLoading, fileError, historyError, dispatch]);
+
+    const stats = {
+        recentFiles: (filesData || []).slice(0, 4),
+        recentShared: (historyData || []).slice(0, 4)
+    };
 
     const handleImgChange = (e) => {
         const file = e.target.files[0];
@@ -65,14 +57,8 @@ const Dashboard = () => {
             .catch((err) => toast.error(err));
     };
 
-    // const handleLogout = () => {
-    //     dispatch(logout());
-    //     navigate("/");
-    // };
-
     return (
         <div className='min-h-screen bg-slate-600 w-full flex overflow-x-hidden relative'>
-            {/* <Loader/> */}
             {isSidebarVisible && (
                 <div className="fixed inset-0 bg-black/50 z-40 lg:hidden" onClick={() => setIsSidebarVisible(false)} />
             )}
@@ -120,7 +106,6 @@ const Dashboard = () => {
                 </div>
             </div>
 
-          
             <div className="flex-1 flex flex-col min-w-0">
                 <header className="bg-slate-200 px-6 py-4 flex justify-between items-center h-20 shadow-md">
                     <div className="flex items-center gap-2">
@@ -139,7 +124,6 @@ const Dashboard = () => {
                     </h2>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        {/* Recent Uploads */}
                         <div className="bg-white/90 p-6 rounded-2xl shadow-xl">
                             <h3 className="text-lg font-bold border-b pb-3 mb-4 text-slate-700">Recent Uploads</h3>
                             {stats.recentFiles.length > 0 ? (
@@ -154,7 +138,6 @@ const Dashboard = () => {
                             ) : <p className="text-slate-400 text-center py-5 italic">No files uploaded.</p>}
                         </div>
 
-                        {/* Recent Shared */}
                         <div className="bg-white/90 p-6 rounded-2xl shadow-xl">
                             <h3 className="text-lg font-bold border-b pb-3 mb-4 text-slate-700">Recent Shared</h3>
                             {stats.recentShared.length > 0 ? (
