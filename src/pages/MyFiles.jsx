@@ -35,15 +35,15 @@ const MyFiles = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 5;
 
-    
-    const { 
-        data: file = [], 
-        isLoading ,
-        error} = useSWR('https://file-system-xi.vercel.app/api/file', fetcher);
+
+    const {
+        data: file = [],
+        isLoading,
+        error } = useSWR('https://file-system-xi.vercel.app/api/file', fetcher);
 
     useEffect(() => {
         dispatch(setloading(isLoading));
-    }, [isLoading,error, dispatch]);
+    }, [isLoading, error, dispatch]);
 
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -56,9 +56,14 @@ const MyFiles = () => {
 
     useEffect(() => {
         const token = localStorage.getItem('token');
-        if (!token) { navigate("/"); return; }
+        if (!token) {
+            navigate("/");
+            return;
+        }
         dispatch(verifyToken()).unwrap().catch(() => navigate("/"));
-        if (!profilePic) { dispatch(fetchProfilePic()); }
+        if (!profilePic) {
+            dispatch(fetchProfilePic());
+        }
     }, [dispatch, navigate, profilePic]);
 
     const handleInputChange = (e) => {
@@ -88,20 +93,21 @@ const MyFiles = () => {
                 body: formData,
             });
             if (response.ok) {
-                setShowSuccess(true); 
-                setUploadFile(null); 
+                setShowSuccess(true);
+                setUploadFile(null);
                 setFileName("");
-                mutate('https://file-system-xi.vercel.app/api/file'); 
-                setTimeout(() => 
+                mutate('https://file-system-xi.vercel.app/api/file');
+                setTimeout(() =>
                     setShowSuccess(false), 3000);
             } else {
                 const errorData = await response.json();
                 setUploadError(errorData.message || "Upload failed");
             }
-        } catch (error) { setUploadError("Network error."); 
+        } catch (error) {
+            setUploadError("Network error.");
 
         }
-         finally { setLoading(false); }
+        finally { setLoading(false); }
     };
 
     const handleImgChange = (e) => {
@@ -119,7 +125,7 @@ const MyFiles = () => {
             headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         });
         if (response.ok) {
-            mutate('https://file-system-xi.vercel.app/api/file'); 
+            mutate('https://file-system-xi.vercel.app/api/file');
             setDeleteModal({ isOpen: false, id: null, publicId: null });
             toast.success("File deleted successfully");
         }
@@ -133,9 +139,11 @@ const MyFiles = () => {
             const response = await fetch('https://file-system-xi.vercel.app/api/share', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('token')}` },
-                body: JSON.stringify({ email: email, 
-                    file_url: selectedFile.file_url || selectedFile.url, 
-                    fileId: selectedFile._id })
+                body: JSON.stringify({
+                    email: email,
+                    file_url: selectedFile.file_url || selectedFile.url,
+                    fileId: selectedFile._id
+                })
             });
             if (response.ok) {
                 toast.success(`Successfully shared with ${email}`);
@@ -144,7 +152,11 @@ const MyFiles = () => {
                 const errorData = await response.json();
                 toast.error(errorData.message || 'Could not share file');
             }
-        } catch (error) { toast.error("An error occurred."); } finally { setLoading(false); }
+        } catch (error) {
+            toast.error("An error occurred.");
+        } finally {
+            setLoading(false);
+        }
     };
 
     const handleDownload = async (file_Id, filename) => {
@@ -161,14 +173,15 @@ const MyFiles = () => {
             link.setAttribute('download', filename || 'file_download');
             document.body.appendChild(link); link.click(); link.parentNode.removeChild(link);
             window.URL.revokeObjectURL(url); toast.success("Download started", { id: 'download' });
-        } catch (error) { toast.error("Could not download the file.", { id: 'download' }); }
+        } catch (error) { 
+            toast.error("Could not download the file.", { id: 'download' }); }
     };
 
     return (
         <>
             <Toaster position="top-center" toastOptions={{ style: { background: '#334155', color: '#fff', borderRadius: '10px' }, success: { style: { background: '#059669' } }, error: { style: { background: '#dc2626' } } }} />
             <div className='min-h-screen bg-slate-600 w-full flex overflow-x-hidden relative font-sans'>
-                {menuVisible && ( <div className="fixed inset-0 bg-black/50 z-40 lg:hidden" onClick={() => setMenuVisible(false)} /> )}
+                {menuVisible && (<div className="fixed inset-0 bg-black/50 z-40 lg:hidden" onClick={() => setMenuVisible(false)} />)}
                 <div className={`bg-slate-400 min-h-screen transition-all duration-300 ease-in-out z-50 ${menuVisible ? "w-80 translate-x-0 relative" : "w-0 -translate-x-full absolute"}`}>
                     <div className={`w-80 ${menuVisible ? "opacity-100" : "opacity-0 pointer-events-none"} transition-opacity duration-200`}>
                         <div className="flex justify-end p-4 lg:hidden"> <FaTimes className="text-white text-2xl cursor-pointer" onClick={() => setMenuVisible(false)} /> </div>
@@ -234,20 +247,22 @@ const MyFiles = () => {
                                             <tr key={f._id} className="border-b hover:bg-slate-50 truncate transition-colors divide-x overflow-x-auto">
                                                 <td className="px-4 py-4 ">{f.filename}</td><td className="px-4 py-4 ">{f.type}</td><td className="px-4 py-4 ">{(f.size / 1024).toFixed(2)} KB</td><td className="px-4 py-4 ">{new Date(f.createdAt).toLocaleDateString()}</td>
                                                 <td className="py-4 px-6">
-                                                    <div className="flex gap-4">
-                                                        <button onClick={() => setDeleteModal({ isOpen: true, id: f._id, publicId: f.public_id })} className="text-red-500 hover:text-red-700"> <MdDeleteForever size={22} /> </button>
-                                                        <button onClick={() => setShareModal({ isOpen: true, file: f, email: '' })} className="text-green-600 hover:text-green-800"> <FaShare size={20} /> </button>
-                                                        <button onClick={() => handleDownload(f._id, f.filename)} className="text-blue-600 hover:text-blue-800"> <IoMdDownload size={22} /> </button>
+                                                    <div className="flex gap-4 ">
+                                                        <button title="Delete" onClick={() => setDeleteModal({ isOpen: true, id: f._id, publicId: f.public_id })} className="text-red-500 hover:text-red-700 "> <MdDeleteForever size={22} /> </button>
+                                                        <button title="Share" onClick={() => setShareModal({ isOpen: true, file: f, email: '' })} className="text-green-600 hover:text-green-800"> <FaShare size={20} /> </button>
+                                                        <button title="Download" onClick={() => handleDownload(f._id, f.filename)} className="text-blue-600 hover:text-blue-800"> <IoMdDownload size={22} /> </button>
                                                     </div>
                                                 </td>
                                             </tr>
                                         ))
-                                    ) : ( <tr><td colSpan="5" className="text-center py-10 text-gray-400">No files found.</td></tr> )}
+                                    ) : (<tr><td colSpan="5" className="text-center py-10 text-gray-400">No files found.</td></tr>)}
                                 </tbody>
                             </table>
                             {file.length > itemsPerPage && (
                                 <div className="p-4 bg-slate-50 rounded-b-xl border-t">
-                                    <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
+                                    <Pagination currentPage={currentPage}
+                                        totalPages={totalPages}
+                                        onPageChange={handlePageChange} />
                                 </div>
                             )}
                         </div>
