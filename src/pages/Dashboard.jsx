@@ -23,7 +23,6 @@ const Dashboard = () => {
     const [isSidebarVisible, setIsSidebarVisible] = useState(true);
     const { fullname, email, profilePic } = useSelector((state) => state.user);
 
-    // SWR Data Fetching
     const { data: filesData, isLoading: filesLoading, error: fileError } = useSWR('https://file-system-xi.vercel.app/api/file', fetcher);
     const { data: historyData, isLoading: historyLoading, error: historyError } = useSWR('https://file-system-xi.vercel.app/api/share', fetcher);
 
@@ -37,7 +36,6 @@ const Dashboard = () => {
         dispatch(fetchProfilePic());
     }, [dispatch, navigate]);
 
-    // Sync SWR loading state with Redux loader
     useEffect(() => {
         dispatch(setloading(filesLoading || historyLoading));
     }, [filesLoading, historyLoading, fileError, historyError, dispatch]);

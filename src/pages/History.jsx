@@ -25,12 +25,12 @@ const History = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 5;
 
-    // SWR Data Fetching
-    const { data, isLoading } = useSWR('https://file-system-xi.vercel.app/api/share', fetcher);
+   
+    const { data, isLoading,error } = useSWR('https://file-system-xi.vercel.app/api/share', fetcher);
 
     useEffect(() => {
         dispatch(setloading(isLoading));
-    }, [isLoading, dispatch]);
+    }, [isLoading,error, dispatch]);
 
     const historyData = data?.sharedFiles || data || [];
     const indexOfLastItem = currentPage * itemsPerPage;

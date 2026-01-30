@@ -35,7 +35,7 @@ const MyFiles = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 5;
 
-    // SWR Data Fetching
+    
     const { data: file = [], isLoading ,error} = useSWR('https://file-system-xi.vercel.app/api/file', fetcher);
 
     useEffect(() => {
@@ -85,14 +85,20 @@ const MyFiles = () => {
                 body: formData,
             });
             if (response.ok) {
-                setShowSuccess(true); setUploadFile(null); setFileName("");
-                mutate('https://file-system-xi.vercel.app/api/file'); // Trigger SWR Refresh
-                setTimeout(() => setShowSuccess(false), 3000);
+                setShowSuccess(true); 
+                setUploadFile(null); 
+                setFileName("");
+                mutate('https://file-system-xi.vercel.app/api/file'); 
+                setTimeout(() => 
+                    setShowSuccess(false), 3000);
             } else {
                 const errorData = await response.json();
                 setUploadError(errorData.message || "Upload failed");
             }
-        } catch (error) { setUploadError("Network error."); } finally { setLoading(false); }
+        } catch (error) { setUploadError("Network error."); 
+
+        }
+         finally { setLoading(false); }
     };
 
     const handleImgChange = (e) => {
@@ -110,7 +116,7 @@ const MyFiles = () => {
             headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         });
         if (response.ok) {
-            mutate('https://file-system-xi.vercel.app/api/file'); // Trigger SWR Refresh
+            mutate('https://file-system-xi.vercel.app/api/file'); 
             setDeleteModal({ isOpen: false, id: null, publicId: null });
             toast.success("File deleted successfully");
         }
@@ -124,7 +130,9 @@ const MyFiles = () => {
             const response = await fetch('https://file-system-xi.vercel.app/api/share', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('token')}` },
-                body: JSON.stringify({ email: email, file_url: selectedFile.file_url || selectedFile.url, fileId: selectedFile._id })
+                body: JSON.stringify({ email: email, 
+                    file_url: selectedFile.file_url || selectedFile.url, 
+                    fileId: selectedFile._id })
             });
             if (response.ok) {
                 toast.success(`Successfully shared with ${email}`);
