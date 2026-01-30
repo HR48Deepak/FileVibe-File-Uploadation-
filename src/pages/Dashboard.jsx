@@ -128,8 +128,8 @@ const Dashboard = () => {
                         <h2 className="text-2xl font-bold italic text-slate-800">FileVibe</h2>
                     </div>
                     <div className="flex gap-2">
-                        <button onClick={() => localStorage.removeItem('token')} className="bg-slate-300 p-3 rounded-lg hover:bg-red-200"><AiOutlineLogout /></button>
-                        <button onClick={() => setIsSidebarVisible(!isSidebarVisible)} className="bg-slate-300 p-3 rounded-lg hover:bg-slate-400"><HiMenuAlt1 /></button>
+                        <button onClick={() => localStorage.removeItem('token')} className="bg-slate-300 p-3 rounded-lg hover:bg-slate-400 cursor-pointer"><AiOutlineLogout /></button>
+                        <button onClick={() => setIsSidebarVisible(!isSidebarVisible)} className="bg-slate-300 p-3 rounded-lg hover:bg-slate-400 cursor-pointer"><HiMenuAlt1 /></button>
                     </div>
                 </header>
 
