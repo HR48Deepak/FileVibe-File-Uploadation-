@@ -29,7 +29,7 @@ const History = () => {
     const { 
         data, 
         isLoading,
-        error } = useSWR('https://file-system-xi.vercel.app/api/share', fetcher);
+        error } = useSWR('https://file-system-xi.vercel.app/api/share', fetcher,{revalidateOnFocus: false});
 
     useEffect(() => {
         dispatch(setloading(isLoading));

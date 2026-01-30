@@ -39,7 +39,7 @@ const MyFiles = () => {
     const {
         data: file = [],
         isLoading,
-        error } = useSWR('https://file-system-xi.vercel.app/api/file', fetcher);
+        error } = useSWR('https://file-system-xi.vercel.app/api/file', fetcher,{revalidateOnFocus: false});
 
     useEffect(() => {
         dispatch(setloading(isLoading));

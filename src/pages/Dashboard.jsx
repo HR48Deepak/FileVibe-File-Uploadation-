@@ -25,10 +25,10 @@ const Dashboard = () => {
 
     const { data: filesData, 
         isLoading: filesLoading, 
-        error: fileError } = useSWR('https://file-system-xi.vercel.app/api/file', fetcher);
+        error: fileError } = useSWR('https://file-system-xi.vercel.app/api/file', fetcher,{revalidateOnFocus: false});
     const { data: historyData, 
         isLoading: historyLoading, 
-        error: historyError } = useSWR('https://file-system-xi.vercel.app/api/share', fetcher);
+        error: historyError } = useSWR('https://file-system-xi.vercel.app/api/share', fetcher,{revalidateOnFocus: false});
 
     useEffect(() => {
         const token = localStorage.getItem('token');
