@@ -283,7 +283,7 @@ const MyFiles = () => {
                         <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-6">
                             <h3 className="text-xl font-bold mb-2">Share File</h3>
                             <p className="text-sm text-gray-500 mb-4">Sharing: <span className="text-slate-800 font-semibold">{shareModal.file?.filename}</span></p>
-                            <input type="email" placeholder="Recipient email" className="w-full p-3 border border-gray-300 rounded-lg outline-none mb-6" value={shareModal.email} onChange={(e) => setShareModal({ ...shareModal, email: e.target.value })} />
+                            <input type="email" placeholder="Recipient email" className="w-full p-3 border border-gray-300 rounded-lg outline-none mb-6 focus:ring-2 focus:ring-blue-500" value={shareModal.email} onChange={(e) => setShareModal({ ...shareModal, email: e.target.value })} />
                             <div className="flex justify-end gap-3">
                                 <button onClick={() => setShareModal({ isOpen: false, file: null, email: '' })} className="px-4 py-2 text-gray-600 border-2 rounded-lg cursor-pointer">Cancel</button>
                                 <button onClick={confirmShare} disabled={loading} className="px-6 py-2 bg-blue-600 text-white rounded-lg cursor-pointer"> {loading ? "Sharing..." : "Share"} </button>
