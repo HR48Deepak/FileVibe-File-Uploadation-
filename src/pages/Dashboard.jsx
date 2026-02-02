@@ -126,7 +126,7 @@ const Dashboard = () => {
                     </h2>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div className="bg-white/90 p-6 rounded-2xl shadow-xl">
+                        <div className="bg-white/90 p-6 rounded-2xl shadow-xl border-b-5 border-blue-700">
                             <h3 className="text-lg font-bold border-b pb-3 mb-4 text-slate-700">Recent Uploads</h3>
                             {stats.recentFiles.length > 0 ? (
                                 <ul className="space-y-3">
@@ -140,7 +140,7 @@ const Dashboard = () => {
                             ) : <p className="text-slate-400 text-center py-5 italic">No files uploaded.</p>}
                         </div>
 
-                        <div className="bg-white/90 p-6 rounded-2xl shadow-xl">
+                        <div className="bg-white/90 p-6 rounded-2xl shadow-xl border-b-5 border-blue-700">
                             <h3 className="text-lg font-bold border-b pb-3 mb-4 text-slate-700">Recent Shared</h3>
                             {stats.recentShared.length > 0 ? (
                                 <ul className="space-y-3">

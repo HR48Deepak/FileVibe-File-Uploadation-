@@ -127,7 +127,7 @@ const History = () => {
                         <div className="flex justify-between items-center">
                             <h2 className="text-3xl font-bold text-white mb-8">History</h2>
                         </div>
-                        <div className="overflow-x-auto bg-white/90 rounded-lg shadow-md">
+                        <div className="overflow-x-auto bg-white/90 rounded-lg shadow-md border-b-5 border-blue-700">
                             <table className="w-full">
                                 <thead className="text-lg font-bold border-b pb-3 mb-4 text-slate-700 ">
                                     <tr className="text-black text-left bg-slate-200 divide-x">

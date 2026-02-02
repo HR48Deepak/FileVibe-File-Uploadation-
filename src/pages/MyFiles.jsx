@@ -39,7 +39,7 @@ const MyFiles = () => {
     const {
         data: file = [],
         isLoading,
-        error } = useSWR('https://file-system-xi.vercel.app/api/file', fetcher,{revalidateOnFocus: false});
+        error } = useSWR('https://file-system-xi.vercel.app/api/file', fetcher, { revalidateOnFocus: false });
 
     useEffect(() => {
         dispatch(setloading(isLoading));
@@ -173,8 +173,9 @@ const MyFiles = () => {
             link.setAttribute('download', filename || 'file_download');
             document.body.appendChild(link); link.click(); link.parentNode.removeChild(link);
             window.URL.revokeObjectURL(url); toast.success("Download started", { id: 'download' });
-        } catch (error) { 
-            toast.error("Could not download the file.", { id: 'download' }); }
+        } catch (error) {
+            toast.error("Could not download the file.", { id: 'download' });
+        }
     };
 
     return (
@@ -234,7 +235,7 @@ const MyFiles = () => {
                             </div>
                         </div>
 
-                        <div className="overflow-x-auto bg-white/90 rounded-xl shadow-md ">
+                        <div className="overflow-x-auto bg-white/90 rounded-xl shadow-md border-b-5 border-blue-700">
                             <table className="w-full text-left">
                                 <thead className="text-lg font-bold border-b pb-3 mb-4 text-slate-700 ">
                                     <tr className="bg-slate-200 divide-x">
