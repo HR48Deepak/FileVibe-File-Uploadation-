@@ -8,6 +8,18 @@ const getAuthHeader = () => ({
 export const verifyToken = createAsyncThunk(
     'user/verifyToken',
     async (_, { rejectWithValue }) => {
+        const authType = localStorage.getItem('authType');
+        const token = localStorage.getItem('token');
+
+        if (!token) return rejectWithValue("No token");
+
+        // If Google user, skip the backend API call entirely
+        if (authType === 'google') {
+            return {
+                fullname: localStorage.getItem('userName'),
+                email: localStorage.getItem('userEmail')
+            };
+        }
         try {
             const token = localStorage.getItem('token');
             if (!token) return rejectWithValue("No token");
@@ -29,6 +41,15 @@ export const verifyToken = createAsyncThunk(
 export const fetchProfilePic = createAsyncThunk(
     'user/fetchProfilePic',
     async (_, { rejectWithValue }) => {
+
+        const authType = localStorage.getItem("authType");
+        const googlePic = localStorage.getItem("userPic");
+
+        // If Google user, just return the stored URL and skip the API call
+        if (authType === "google" && googlePic) {
+            return googlePic;
+        }
+
         try {
             const response = await axios.get('https://file-system-xi.vercel.app/api/profile-picture', {
                 responseType: 'blob',

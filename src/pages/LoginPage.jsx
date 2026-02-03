@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Lock, Mail, Eye, EyeOff, AlertCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { FcWorkflow } from 'react-icons/fc';
+import { FcGoogle } from "react-icons/fc";
+import { auth, googleProvider } from "../firebase";
+import { signInWithPopup } from 'firebase/auth';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -28,9 +31,7 @@ const LoginPage = () => {
       setError('Please fill in all fields before signing in.');
       return;
     }
-    // verify credentials with an API here
-    // console.log("Logging in with:", formData);
-    // navigate('/'); 
+
     try {
       const response = await fetch("https://file-system-xi.vercel.app/api/login", {
         method: 'POST',
@@ -49,13 +50,38 @@ const LoginPage = () => {
         //             localStorage.setItem("userEmail", data.user.email);
         //         }
         navigate('/Dashboard');
-   
+
       } else {
         setError(data.message || 'Login failed')
       }
     }
     catch (err) {
       setError('connection error')
+    }
+
+  }
+  
+  const handleGoogleSignin = async () => {
+    // debugger
+    setError('');
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      const user = result.user;
+      // console.log("Logged in:", user.email);
+      const token = await user.getIdToken();
+      
+      localStorage.setItem("token", token);
+      localStorage.setItem("userName", user.displayName);
+      localStorage.setItem("userEmail", user.email)
+      localStorage.setItem("userPic", user.photoURL);
+      localStorage.setItem("authType", "google"); 
+
+      // console.log("Logged in:", user.email);
+      navigate("/Dashboard")
+
+    } catch (error) {
+      console.error(error.message);
+      setError("Failed");
     }
 
   }
@@ -139,7 +165,13 @@ const LoginPage = () => {
             Sign in
           </button>
         </form>
-
+        <button
+          type='button'
+          onClick={handleGoogleSignin}
+          className="w-full cursor-pointer flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-semibold  text-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all active:scale-[0.98]"
+        >
+          Continue with <FcGoogle className='size-6 ml-2' />
+        </button>
         <p className="text-center text-sm text-gray-600">
           Don't have an account?{' '}
           {/* <button className="font-medium text-indigo-600 hover:text-indigo-500">Sign up</button> */}

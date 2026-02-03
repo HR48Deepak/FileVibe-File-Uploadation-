@@ -34,12 +34,13 @@ const MyFiles = () => {
 
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 5;
-
+    
+    const isGoogle = localStorage.getItem("authType") === "google";
 
     const {
         data: file = [],
         isLoading,
-        error } = useSWR('https://file-system-xi.vercel.app/api/file', fetcher, { revalidateOnFocus: false });
+        error } = useSWR(!isGoogle ? 'https://file-system-xi.vercel.app/api/file' : null, fetcher, { revalidateOnFocus: false });
 
     useEffect(() => {
         dispatch(setloading(isLoading));
@@ -82,7 +83,8 @@ const MyFiles = () => {
     const handleUploadSubmit = async (e) => {
         e.preventDefault();
         if (!uploadFile) { setUploadError("Please select a file first!"); return; }
-        setLoading(true); setUploadError("");
+        // setLoading(true); 
+        setUploadError("");
         const formData = new FormData();
         formData.append('file', uploadFile);
 
@@ -107,7 +109,8 @@ const MyFiles = () => {
             setUploadError("Network error.");
 
         }
-        finally { setLoading(false); }
+        // finally { 
+        //     setLoading(false); }
     };
 
     const handleImgChange = (e) => {

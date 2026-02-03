@@ -25,15 +25,15 @@ const History = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 5;
 
-   
-    const { 
-        data, 
+    const isGoogle = localStorage.getItem("authType") === "google";
+    const {
+        data,
         isLoading,
-        error } = useSWR('https://file-system-xi.vercel.app/api/share', fetcher,{revalidateOnFocus: false});
+        error } = useSWR(!isGoogle ? 'https://file-system-xi.vercel.app/api/share' : null, fetcher, { revalidateOnFocus: false });
 
     useEffect(() => {
         dispatch(setloading(isLoading));
-    }, [isLoading,error, dispatch]);
+    }, [isLoading, error, dispatch]);
 
     const historyData = data?.sharedFiles || data || [];
     const indexOfLastItem = currentPage * itemsPerPage;
