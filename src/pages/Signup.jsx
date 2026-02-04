@@ -71,10 +71,7 @@ const Signup = () => {
           </div>
         )}
 
-        <form className="mt-8 space-y-6"
-          // onSubmit={handleLogin}
-          onSubmit={handleSignup}
-        >
+        <form className="mt-8 space-y-6"onSubmit={handleSignup}>
           <div className="space-y-4">
 
             {/* Full Name */}
@@ -92,6 +89,7 @@ const Signup = () => {
                   onChange={handleInputChange}
                   className={`block w-full pl-10 pr-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-600 focus:border-transparent outline-none transition-all ${error && !formData.email ? 'border-red-500 bg-red-50' : 'border-gray-300'}`}
                   placeholder="FullName"
+                  autoComplete="off"
                 />
               </div>
             </div>
@@ -112,6 +110,7 @@ const Signup = () => {
                   onChange={handleInputChange}
                   className={`block w-full pl-10 pr-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-600 focus:border-transparent [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin]:appearance-none outline-none transition-all ${error && !formData.email ? 'border-red-500 bg-red-50' : 'border-gray-300'}`}
                   placeholder="Number"
+                  autoComplete="off"
                 />
               </div>
             </div>
@@ -129,7 +128,8 @@ const Signup = () => {
                   value={formData.email}
                   onChange={handleInputChange}
                   className={`block w-full pl-10 pr-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-600 focus:border-transparent outline-none transition-all ${error && !formData.email ? 'border-red-500 bg-red-50' : 'border-gray-300'}`}
-                  placeholder="name@company.com"
+                  placeholder="name@gmail.com"
+                  autoComplete="off"
                 />
               </div>
             </div>
@@ -148,6 +148,7 @@ const Signup = () => {
                   onChange={handleInputChange}
                   className={`block w-full pl-10 pr-10 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-600 focus:border-transparent outline-none transition-all ${error && !formData.password ? 'border-red-500 bg-red-50' : 'border-gray-300'}`}
                   placeholder="••••••••"
+                  autoComplete="off"
                 />
                 <button
                   type="button"

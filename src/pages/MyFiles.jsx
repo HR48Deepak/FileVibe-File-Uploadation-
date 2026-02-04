@@ -1,6 +1,6 @@
 import { MdDashboardCustomize, MdDeleteForever } from "react-icons/md";
 import { FaFileSignature, FaHistory, FaTimes, FaShare } from "react-icons/fa";
-import { AiOutlineLogout, AiOutlineCheckCircle, AiOutlineClose } from "react-icons/ai";
+import { AiOutlineLogout, AiOutlineCheckCircle } from "react-icons/ai";
 import { FcWorkflow } from "react-icons/fc";
 import { HiMenuAlt1 } from "react-icons/hi";
 import { IoMdDownload } from "react-icons/io";
@@ -13,8 +13,11 @@ import { verifyToken, fetchProfilePic, uploadProfilePic, setloading } from "../r
 import useSWR, { useSWRConfig } from 'swr';
 
 const fetcher = (url) => fetch(url, {
+
     headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
 }).then(res => res.json());
+
+
 
 const MyFiles = () => {
     const { mutate } = useSWRConfig();
@@ -34,13 +37,11 @@ const MyFiles = () => {
 
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 5;
-    
-    const isGoogle = localStorage.getItem("authType") === "google";
 
     const {
         data: file = [],
         isLoading,
-        error } = useSWR(!isGoogle ? 'https://file-system-xi.vercel.app/api/file' : null, fetcher, { revalidateOnFocus: false });
+        error } = useSWR( 'https://file-system-xi.vercel.app/api/file' , fetcher, { revalidateOnFocus: false });
 
     useEffect(() => {
         dispatch(setloading(isLoading));
@@ -48,7 +49,10 @@ const MyFiles = () => {
 
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentFiles = file.slice(indexOfFirstItem, indexOfLastItem);
+    // const currentFiles = file?.slice(indexOfFirstItem, indexOfLastItem);
+    const currentFiles = Array.isArray(file) 
+    ? file.slice(indexOfFirstItem, indexOfLastItem) 
+    : [];
     const totalPages = Math.ceil(file.length / itemsPerPage);
 
     const handlePageChange = (pageNumber) => {
@@ -109,8 +113,8 @@ const MyFiles = () => {
             setUploadError("Network error.");
 
         }
-        // finally { 
-        //     setLoading(false); }
+        finally { 
+            setLoading(false); }
     };
 
     const handleImgChange = (e) => {

@@ -66,18 +66,18 @@ const LoginPage = () => {
     setError('');
     try {
       const result = await signInWithPopup(auth, googleProvider);
-      const user = result.user;
+      // const user = result.user;
       // console.log("Logged in:", user.email);
-      const token = await user.getIdToken();
+      // const token = await user.getIdToken();
       
-      localStorage.setItem("token", token);
-      localStorage.setItem("userName", user.displayName);
-      localStorage.setItem("userEmail", user.email)
-      localStorage.setItem("userPic", user.photoURL);
-      localStorage.setItem("authType", "google"); 
+      // localStorage.setItem("token", token);
+      // localStorage.setItem("userName", user.displayName);
+      // localStorage.setItem("userEmail", user.email)
+      // localStorage.setItem("userPic", user.photoURL);
+      // localStorage.setItem("authType", "google"); 
 
       // console.log("Logged in:", user.email);
-      navigate("/Dashboard")
+      navigate("/Google")
 
     } catch (error) {
       console.error(error.message);
@@ -85,6 +85,7 @@ const LoginPage = () => {
     }
 
   }
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-200 px-4 ">
@@ -120,7 +121,8 @@ const LoginPage = () => {
                   value={formData.email}
                   onChange={handleInputChange}
                   className={`block w-full pl-10 pr-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-600 focus:border-transparent outline-none transition-all ${error && !formData.email ? 'border-red-500 bg-red-50' : 'border-gray-300'}`}
-                  placeholder="name@company.com"
+                  placeholder="name@gmail.com"
+                  autoComplete="off"
                 />
               </div>
             </div>
@@ -138,6 +140,7 @@ const LoginPage = () => {
                   onChange={handleInputChange}
                   className={`block w-full pl-10 pr-10 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-600 focus:border-transparent outline-none transition-all ${error && !formData.password ? 'border-red-500 bg-red-50' : 'border-gray-300'}`}
                   placeholder="••••••••"
+                  autoComplete="off"
                 />
                 <button
                   type="button"

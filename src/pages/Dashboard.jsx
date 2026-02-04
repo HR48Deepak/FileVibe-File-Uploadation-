@@ -23,16 +23,15 @@ const Dashboard = () => {
     const [isSidebarVisible, setIsSidebarVisible] = useState(true);
     const { fullname, email, profilePic } = useSelector((state) => state.user);
 
-    const isGoogleUser = localStorage.getItem("authType") === "google";
 
    
     const { data: filesData, 
         isLoading: filesLoading, 
-        error: fileError } = useSWR(!isGoogleUser ? 'https://file-system-xi.vercel.app/api/file' : null, fetcher, { revalidateOnFocus: false });
+        error: fileError } = useSWR('https://file-system-xi.vercel.app/api/file' , fetcher, { revalidateOnFocus: false });
 
     const { data: historyData, 
         isLoading: historyLoading, 
-        error: historyError } = useSWR(!isGoogleUser ? 'https://file-system-xi.vercel.app/api/share' : null, fetcher, { revalidateOnFocus: false });
+        error: historyError } = useSWR('https://file-system-xi.vercel.app/api/share' , fetcher, { revalidateOnFocus: false });
 
     
 
@@ -50,18 +49,6 @@ const Dashboard = () => {
         dispatch(setloading(filesLoading || historyLoading));
     }, [filesLoading, historyLoading, fileError, historyError, dispatch]);
 
-    useEffect(() => {
-        const authType = localStorage.getItem("authType");
-
-        if (authType === "google") {
-            // Just fetch the profile pic (which now handles Google locally)
-            dispatch(fetchProfilePic());
-        } else {
-            // Standard flow for regular users
-            dispatch(verifyToken());
-            dispatch(fetchProfilePic());
-        }
-    }, [dispatch]);
 
     const stats = {
         recentFiles: (filesData || []).slice(0, 4),

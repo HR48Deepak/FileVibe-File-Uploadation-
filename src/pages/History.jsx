@@ -25,11 +25,10 @@ const History = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 5;
 
-    const isGoogle = localStorage.getItem("authType") === "google";
     const {
         data,
         isLoading,
-        error } = useSWR(!isGoogle ? 'https://file-system-xi.vercel.app/api/share' : null, fetcher, { revalidateOnFocus: false });
+        error } = useSWR('https://file-system-xi.vercel.app/api/share' , fetcher, { revalidateOnFocus: false });
 
     useEffect(() => {
         dispatch(setloading(isLoading));

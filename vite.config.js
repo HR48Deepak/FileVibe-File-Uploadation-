@@ -8,8 +8,8 @@ export default defineConfig({
   tailwindcss()
   ],
   server: {
-    port: 3000,
-  strictPort: true,
+    // port: 3000,
+    // strictPort: true,
     headers: {
       "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
     },
