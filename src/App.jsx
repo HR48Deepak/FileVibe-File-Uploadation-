@@ -1,4 +1,5 @@
-import { Routes, Route, Router } from "react-router-dom";
+// import { Routes, Route, Router } from "react-router-dom";
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import Dashboard from "./pages/Dashboard";
 import MyFiles from "./pages/MyFiles";
 import "./app.css"
@@ -12,6 +13,8 @@ function App() {
   return (
     <>
       <Loader />
+      <Router>
+
       <Routes>
         <Route path="/Dashboard" element={<Dashboard />} />
         <Route path="/my-files" element={<MyFiles />} />
@@ -20,6 +23,7 @@ function App() {
         <Route path="/Signup" element={<Signup />} />
         <Route path="/Google" element={<Google />} />
       </Routes>
+      </Router>
     </>
 
   );
