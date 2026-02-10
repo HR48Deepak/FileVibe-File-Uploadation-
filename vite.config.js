@@ -5,8 +5,10 @@ import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
   plugins: [react(),
-  tailwindcss()
+  tailwindcss(),
+  
   ],
+  base:'/FileVibe-File-Uploadation-/',
   server: {
     // port: 3000,
     // strictPort: true,
