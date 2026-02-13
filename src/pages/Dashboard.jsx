@@ -153,7 +153,7 @@ const Dashboard = () => {
                                     {stats.recentShared.map((item) => (
                                         <li key={item._id} className="flex justify-between items-center p-3 bg-slate-50 rounded-lg">
                                             <span className="text-sm font-medium truncate w-40">🔗 {item.file?.filename || "Shared File"}</span>
-                                            <span className="text-xs bg-blue-100 text-blue-600 px-2 py-1 rounded font-bold">SHARED</span>
+                                            <span className="text-xs bg-blue-100 text-blue-600 px-2 py-1 rounded font-bold">{item.receiverEmail}</span>
                                         </li>
                                     ))}
                                 </ul>

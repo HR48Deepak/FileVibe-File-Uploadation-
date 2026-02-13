@@ -8,7 +8,7 @@ export default defineConfig({
   tailwindcss(),
   
   ],
-  base:'/FileVibe-File-Uploadation-/',
+  // base:'/FileVibe-File-Uploadation-/',
   server: {
     // port: 3000,
     // strictPort: true,
