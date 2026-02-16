@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 // import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import Dashboard from "./pages/Dashboard";
 import MyFiles from "./pages/MyFiles";
-import "./app.css"
+import "./App.css"
 import History from "./pages/History";
 import LoginPage from "./pages/LoginPage"
 import Signup from "./pages/Signup";
